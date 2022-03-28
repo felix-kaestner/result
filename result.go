@@ -1,38 +1,31 @@
 package result
 
-const (
-	// Version is the current version of the library.
-	Version = "0.0.1"
-)
+// Result discripes a discriminated union that encapsulates
+// a successful outcome with a value of type T or a failure
+// with an arbitrary error.
+type Result[T any] interface {
+	// Value returns the encapsulated value if this instance
+	// represents success or nil if it is failure.
+	Value() *T
 
-type (
-	// Result discripes a discriminated union that encapsulates
-	// a successful outcome with a value of type T or a failure
-	// with an arbitrary error.
-	Result[T any] interface {
-		// Value returns the encapsulated value if this instance
-		// represents success or nil if it is failure.
-		Value() *T
+	// Error returns the encapsulated error if this instance
+	// represents failure or nil if it is success.
+	Error() error
 
-		// Error returns the encapsulated error if this instance
-		// represents failure or nil if it is success.
-		Error() error
+	// IsSuccess returns true if this instance represents
+	// success or false if it is failure.
+	IsSuccess() bool
 
-		// IsSuccess returns true if this instance represents
-		// success or false if it is failure.
-		IsSuccess() bool
+	// IsFailure returns true if this instance represents
+	// failure or false if it is success.
+	IsFailure() bool
+}
 
-		// IsFailure returns true if this instance represents
-		// failure or false if it is success.
-		IsFailure() bool
-	}
-
-	// result is an implementation of the Result interface.
-	result[T any] struct {
-		value *T
-		err   error
-	}
-)
+// result is an implementation of the Result interface.
+type result[T any] struct {
+	value *T
+	err   error
+}
 
 func (r *result[T]) Value() *T {
 	return r.value
