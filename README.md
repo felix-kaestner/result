@@ -1,4 +1,4 @@
-# Go Library Template
+# Result
 
 <p align="center">
     <span>Go Completion Implementation with support for Generics (requires Go v1.18+).</span>
@@ -31,10 +31,21 @@
 ```go
 package main
 
-import "github.com/felix-kaestner/result"
+import (
+	"fmt"
+
+	"github.com/felix-kaestner/result"
+)
 
 func main() {
-    // TODO: Do some stuff with the library
+	v := "Hello World"
+	r := result.Success(&v)
+	if r.IsFailure() {
+		panic(r.Error())
+	}
+	if r.IsSuccess() {
+		fmt.Println(fmt.Printf("Success %v", *r.Value()))
+	}
 }
 ```
 
