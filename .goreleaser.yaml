@@ -2,7 +2,7 @@ before:
   hooks:
     - go mod tidy
 builds:
-- skip: true
+  - skip: true
 changelog:
   sort: asc
   filters:
