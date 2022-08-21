@@ -39,12 +39,12 @@ import (
 
 func main() {
 	v := "Hello World"
-	r := result.Success(&v)
+	r := result.Success(v)
 	if r.IsFailure() {
 		panic(r.Error())
 	}
 	if r.IsSuccess() {
-		fmt.Println(fmt.Printf("Success %v", *r.Value()))
+		fmt.Println(fmt.Printf("Success %v", r.Value()))
 	}
 }
 ```
