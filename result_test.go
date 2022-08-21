@@ -36,8 +36,8 @@ func assertEqual(t *testing.T, expected, actual interface{}) {
 
 func TestResult(t *testing.T) {
 	{
-		r := Success(1)
-		assertEqual(t, 1, *r.Value())
+		r := New(1, nil)
+		assertEqual(t, 1, r.Value())
 		assertEqual(t, nil, r.Error())
 		assertEqual(t, true, r.IsSuccess())
 		assertEqual(t, false, r.IsFailure())
@@ -60,8 +60,8 @@ func TestResult(t *testing.T) {
 	{
 		v := 1
 		r := Success(&v)
-		assertEqual(t, 1, **r.Value())
-		assertEqual(t, &v, *r.Value())
+		assertEqual(t, 1, *r.Value())
+		assertEqual(t, &v, r.Value())
 		assertEqual(t, nil, r.Error())
 		assertEqual(t, true, r.IsSuccess())
 		assertEqual(t, false, r.IsFailure())
@@ -97,7 +97,6 @@ func TestResult(t *testing.T) {
 		})
 		r.OnSuccess(func(value any) {
 			t.Errorf("Expected error, but got value %v", value)
-
 		})
 		r.OnFailure(func(e error) {
 			assertEqual(t, err, e)

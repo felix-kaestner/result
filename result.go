@@ -4,9 +4,10 @@ package result
 // a successful outcome with a value of type T or a failure
 // with an arbitrary error.
 type Result[T any] interface {
-	// Value returns a pointer to the encapsulated value if
-	// this instance represents success or nil if it is failure.
-	Value() *T
+	// Value returns the encapsulated value if
+	// this instance represents success or the zero value
+	// if it is failure.
+	Value() T
 
 	// Error returns the encapsulated error if this instance
 	// represents failure or nil if it is success.
@@ -45,11 +46,8 @@ type result[T any] struct {
 	err   error
 }
 
-func (r *result[T]) Value() *T {
-	if r.err == nil {
-		return &r.value
-	}
-	return nil
+func (r *result[T]) Value() (t T) {
+	return r.value
 }
 
 func (r *result[T]) Error() error {
@@ -87,6 +85,15 @@ func (r *result[T]) OnFailure(fn func(error)) {
 func (r *result[T]) Recover(fn func(error) T) {
 	if r.IsFailure() {
 		r.value, r.err = fn(r.err), nil
+	}
+}
+
+// New creates a new Result instance representing either a success or failure
+// depending on the arguments.
+func New[T any](v T, err error) Result[T] {
+	return &result[T]{
+		value: v,
+		err:   err,
 	}
 }
 
