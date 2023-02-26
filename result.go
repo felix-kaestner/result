@@ -97,6 +97,12 @@ func New[T any](v T, err error) Result[T] {
 	}
 }
 
+// From creates a new Result instance representing either a success or failure
+// depending on return values of the function fn.
+func From[T any](fn func() (T, error)) Result[T] {
+	return New(fn())
+}
+
 // Success creates a new Result instance representing a success.
 func Success[T any](v T) Result[T] {
 	return &result[T]{
